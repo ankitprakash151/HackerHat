@@ -1,0 +1,18 @@
+# Dependencies
+**/node_modules/
+# Local secrets (keep templates)
+.env*
+!.env.example
+# Generated scan output and temporary data
+**/reports_storage/
+**/temp_uploads/
+**/coverage/
+**/.next/
+**/dist/
+**/build/
+# Local editor and OS files
+.vscode/
+.DS_Store
+# Logs and generated TypeScript build metadata
+*.log
+*.tsbuildinfo

@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # MongoDB Atlas / Local Database
+  mongodb:
+    image: mongo:6.0
+    container_name: vibeshield-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: vibeshield
+    volumes:
+      - mongo_data:/data/db
+
+  # VibeShield Backend API
+  server:
+    build:
+      context: ../server
+      dockerfile: Dockerfile
+    container_name: vibeshield-api
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      NODE_ENV: production
+      MONGODB_URI: mongodb://mongodb:27017/vibeshield
+      CLIENT_URL: http://localhost:3000
+      DOCKER_PATH: docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # For DAST container orchestration
+      - temp_storage:/app/temp_uploads
+      - report_storage:/app/reports_storage
+    depends_on:
+      - mongodb
+
+  # VibeShield Next.js Client
+  client:
+    build:
+      context: ../client
+      dockerfile: Dockerfile
+    container_name: vibeshield-client
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:5000/api
+    depends_on:
+      - server
+
+volumes:
+  mongo_data:
+  temp_storage:
+  report_storage:

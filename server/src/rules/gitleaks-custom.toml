@@ -1,0 +1,58 @@
+title = "VibeShield Gitleaks Configuration for Vibe-Coded Apps"
+
+[[rules]]
+id = "openai-api-key"
+description = "Detected OpenAI API Key"
+regex = '''(?i)\b(sk-[a-zA-Z0-9]{20,T3BlbkFJ[a-zA-Z0-9]{20,}|sk-proj-[a-zA-Z0-9\-_]{48,})\b'''
+keywords = ["sk-", "openai"]
+entropy = 3.5
+severity = "CRITICAL"
+
+[[rules]]
+id = "anthropic-api-key"
+description = "Detected Anthropic Claude API Key"
+regex = '''(?i)\b(sk-ant-[a-zA-Z0-9\-_]{32,})\b'''
+keywords = ["sk-ant-"]
+severity = "CRITICAL"
+
+[[rules]]
+id = "stripe-secret-key"
+description = "Detected Stripe Secret Key"
+regex = '''(?i)\b(sk_live_[0-9a-zA-Z]{24,})\b'''
+keywords = ["sk_live_"]
+severity = "CRITICAL"
+
+[[rules]]
+id = "github-pat"
+description = "Detected GitHub Personal Access Token"
+regex = '''(?i)\b(ghp_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9]{22}_[a-zA-Z0-9]{59})\b'''
+keywords = ["ghp_", "github_pat_"]
+severity = "CRITICAL"
+
+[[rules]]
+id = "mongodb-connection-uri"
+description = "Detected MongoDB Connection String with Credentials"
+regex = '''(?i)mongodb(\+srv)?:\/\/[a-zA-Z0-9_\-\.%]+:[^@\s"']+@[a-zA-Z0-9_\-\.]+'''
+keywords = ["mongodb://", "mongodb+srv://"]
+severity = "CRITICAL"
+
+[[rules]]
+id = "postgres-connection-uri"
+description = "Detected PostgreSQL Connection String with Password"
+regex = '''(?i)postgres(ql)?:\/\/[a-zA-Z0-9_\-\.%]+:[^@\s"']+@[a-zA-Z0-9_\-\.]+'''
+keywords = ["postgres://", "postgresql://"]
+severity = "CRITICAL"
+
+[[rules]]
+id = "aws-access-key-id"
+description = "Detected AWS Access Key ID"
+regex = '''\b((?:AKIA|ABIA|ACCA|ASIA)[0-9A-Z]{16})\b'''
+keywords = ["AKIA", "ASIA"]
+severity = "HIGH"
+
+[[rules]]
+id = "committed-env-file"
+description = "Detected Committed .env or .env.local File"
+regex = '''(?i)^\.env(\.(local|development|production|staging|test))?$'''
+path = '''(?i)^\.env(\.(local|development|production|staging|test))?$'''
+severity = "HIGH"
